@@ -1,2 +1,2 @@
-# advent_of_code
+# Advent of Code
 These are my attempts at solving AoC-puzzles.
