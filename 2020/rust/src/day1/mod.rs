@@ -1,7 +1,7 @@
 use std::fs;
 
-pub fn run() -> i64 {
-  let contents = fs::read_to_string("src/day1/input")
+pub fn run(input: &str) -> i64 {
+  let contents = fs::read_to_string(input)
         .expect("Something went wrong reading the file");
   let numbers: Vec<&str> = contents.split_whitespace().collect();
 
@@ -31,8 +31,8 @@ pub fn run() -> i64 {
   num1 * num2
 }
 
-pub fn run_2() -> i64 {
-  let contents = fs::read_to_string("src/day1/input")
+pub fn run_2(input: &str) -> i64 {
+  let contents = fs::read_to_string(input)
         .expect("Something went wrong reading the file");
   let numbers: Vec<&str> = contents.split_whitespace().collect();
 
