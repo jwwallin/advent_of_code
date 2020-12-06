@@ -3,6 +3,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 fn main() {
     println!("Hello, world!");
@@ -25,5 +26,9 @@ fn main() {
 
     println!("Day 5 result: {}", day5::run("src/day5/input"));
     println!("Day 5 result2: {}", day5::run_2("src/day5/input"));
+    println!("");
+
+    println!("Day 6 result: {}", day6::run("src/day6/input"));
+    println!("Day 6 result2: {}", day6::run_2("src/day6/input"));
     println!("");
 }
