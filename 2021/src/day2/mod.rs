@@ -3,7 +3,7 @@ pub fn run(input: String) -> Result<i64, String> {
     let mut depth = 0;
 
     input
-        .split('\n')
+        .lines()
         .map(str::trim)
         .filter(|v| !v.is_empty())
         .map(String::from)
@@ -21,7 +21,7 @@ pub fn run(input: String) -> Result<i64, String> {
                 depth += mov.dist;
                 Ok(())
             }
-            _ => Err(String::from(format!("Unexpected direction {}", mov.dir))),
+            _ => Err(format!("Unexpected direction {}", mov.dir)),
         })?;
     Ok(forward * depth)
 }
@@ -32,7 +32,7 @@ pub fn run_2(input: String) -> Result<i64, String> {
     let mut aim = 0;
 
     input
-        .split('\n')
+        .lines()
         .map(str::trim)
         .filter(|v| !v.is_empty())
         .map(String::from)
@@ -51,7 +51,7 @@ pub fn run_2(input: String) -> Result<i64, String> {
                 aim += mov.dist;
                 Ok(())
             }
-            _ => Err(String::from(format!("Unexpected direction {}", mov.dir))),
+            _ => Err(format!("Unexpected direction {}", mov.dir)),
         })?;
     Ok(forward * depth)
 }
@@ -67,15 +67,15 @@ impl TryFrom<String> for Move {
     fn try_from(s: String) -> Result<Move, Self::Error> {
         let split: Vec<&str> = s.split(' ').collect();
 
-        let dir = split.get(0).ok_or(String::from("no direction in string"))?;
-        let dist = split.get(1).ok_or(String::from("no distance in string"))?;
+        let dir = split.get(0).ok_or_else(|| "no direction in string".to_string())?;
+        let dist = split.get(1).ok_or_else(|| "no distance in string".to_string())?;
         let dist = dist
             .parse::<i64>()
             .map_err(|_| String::from("failed to parse distance"))?;
 
         Ok(Move {
             dir: String::from(*dir),
-            dist: dist,
+            dist,
         })
     }
 }

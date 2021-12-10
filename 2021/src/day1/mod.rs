@@ -32,8 +32,8 @@ pub fn run_2(input: String) -> Result<i64, String> {
   for i in 0..vals.len() - 2 {
     let window = vals
       .get(i..i + 3)
-      .ok_or(String::from("Failed to get window."))?;
-    let sum = window.iter().fold(0, |prev, v| prev + v);
+      .ok_or_else(|| "Failed to get window.".to_string())?;
+    let sum = window.iter().sum();
     if i != 0 && sum > prev {
       count += 1;
     }

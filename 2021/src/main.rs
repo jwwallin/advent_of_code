@@ -15,5 +15,5 @@ fn main() {
     Ok(v) => v.to_string(),
     Err(s) => s
   });
-  println!("");
+  println!();
 }
