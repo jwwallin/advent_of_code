@@ -4,18 +4,16 @@ module D1p1
   )
   where
 
-import Parsing.Combinators
-import Parsing.String
-import Parsing.String.Basic
-import Partial.Unsafe
+import Parsing.Combinators (empty, many, try)
+import Parsing.String (char)
+import Parsing.String.Basic (digit, letter)
+import Partial.Unsafe (unsafePartial)
 import Prelude
 
 import Data.Foldable (sum)
 import Data.Int (fromString)
-import Data.List (List)
 import Data.List.Partial (head, last)
 import Data.Maybe (Maybe(..))
-import Data.Profunctor.Strong (first)
 import Data.String.CodeUnits (fromCharArray)
 import Effect (Effect)
 import Effect.Console (log)
@@ -35,8 +33,8 @@ main = do
 parserHelper :: Parser String Int
 parserHelper = do
   _ <- many letter
-  first <- digit
-  case fromString $ fromCharArray [ first ] of
+  num <- digit
+  case fromString $ fromCharArray [ num ] of
     Nothing -> empty
     Just i -> pure i
 
@@ -53,6 +51,8 @@ parser :: Parser String Int
 parser = do
   decimalList <- many $ try lineParse
   pure $ sum decimalList
+
+
 
 
 

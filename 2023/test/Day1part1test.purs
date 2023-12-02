@@ -1,4 +1,4 @@
-module Test.Main where
+module Test.D1p1 (d1p1test) where
 
 import D1p1
 import Prelude
@@ -15,8 +15,8 @@ a1b2c3d4e5f
 treb7uchet
 """
 
-main :: Effect Unit
-main = do
+d1p1test :: Effect Unit
+d1p1test = do
   log "Running Day 1 Part 1 test."
   let result = runParser input parser 
   assertEqual {actual: result, expected: Right 142}
