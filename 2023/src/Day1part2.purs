@@ -1,7 +1,19 @@
 module D1p2
-  ( main,
-    parser
-  ) where
+  (main, 
+  parser, 
+  parserHelper, 
+  lineParse, 
+  parseZero, 
+  parseOne, 
+  parseTwo, 
+  parseThree, 
+  parseFour, 
+  parseFive, 
+  parseSix, 
+  parseSeven, 
+  parseEight, 
+  parseNine
+) where
 
 import Prelude
 
@@ -15,8 +27,8 @@ import Effect.Console (log)
 import Node.Encoding (Encoding(..))
 import Node.FS.Sync (readTextFile)
 import Parsing (Parser, runParser)
-import Parsing.Combinators (empty, many, try, (<|>))
-import Parsing.String (anyChar, char, string)
+import Parsing.Combinators (empty, many, optional, try, (<|>))
+import Parsing.String (anyChar, anyCodePoint, char, string)
 import Parsing.String.Basic (letter)
 import Partial.Unsafe (unsafePartial)
 
@@ -31,7 +43,16 @@ main = do
 
 parserHelper :: Parser String Int
 parserHelper = do
-  num <- parseZero <|> parseOne <|> parseTwo <|> parseThree <|> parseFour <|> parseFive <|> parseSix <|> parseSeven <|> parseEight <|> parseNine <|> anyChar
+  num <-  try parseZero <|> 
+          try parseOne <|>
+          try parseTwo <|>
+          try parseThree <|>
+          try parseFour <|>
+          try parseFive <|>
+          try parseSix <|>
+          try parseSeven <|>
+          try parseEight <|>
+          try parseNine <|> anyChar
   case fromString $ fromCharArray [ num ] of
     Nothing -> empty
     Just i -> pure i
