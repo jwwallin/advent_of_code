@@ -2,7 +2,10 @@ module D1p2
   (main, 
   parser, 
   parserHelper, 
-  lineParse, 
+  lineParse,
+  lineParseFirstNum,
+  lineParseLastNum,
+  lineParseFullArray,
   parseZero, 
   parseOne, 
   parseTwo, 
@@ -19,6 +22,7 @@ import Prelude
 
 import Data.Foldable (sum)
 import Data.Int (fromString)
+import Data.List (List)
 import Data.List.Partial (head, last)
 import Data.Maybe (Maybe(..))
 import Data.String.CodeUnits (fromCharArray)
@@ -41,6 +45,43 @@ main = do
 
 
 
+parser :: Parser String Int
+parser = do
+  decimalList <- many $ try lineParse
+  pure $ sum decimalList
+
+
+lineParse :: Parser String Int
+lineParse = do
+  decimalList <- many $ try parserHelper
+  _ <- char '\n'
+  let firstNum = unsafePartial $ head decimalList
+  let lastNum = unsafePartial $ last decimalList
+  pure $ firstNum * 10 + lastNum
+
+ -- helper parser to aid in debugging
+lineParseFirstNum :: Parser String Int
+lineParseFirstNum = do
+  decimalList <- many $ try parserHelper
+  _ <- char '\n'
+  let firstNum = unsafePartial $ head decimalList
+  pure $ firstNum
+
+ -- helper parser to aid in debugging
+lineParseLastNum :: Parser String Int
+lineParseLastNum = do
+  decimalList <- many $ try parserHelper
+  _ <- char '\n'
+  let lastNum = unsafePartial $ last decimalList
+  pure $ lastNum
+
+ -- helper parser to aid in debugging
+lineParseFullArray :: Parser String (List Int)
+lineParseFullArray = do
+  decimalList <- many $ try parserHelper
+  _ <- char '\n'
+  pure $ decimalList
+
 parserHelper :: Parser String Int
 parserHelper = do
   num <-  try parseZero <|> 
@@ -52,24 +93,12 @@ parserHelper = do
           try parseSix <|>
           try parseSeven <|>
           try parseEight <|>
-          try parseNine <|> anyChar
+          try parseNine <|> anyChar -- For some reason this anyChar seems to be failing entirely
   case fromString $ fromCharArray [ num ] of
     Nothing -> empty
     Just i -> pure i
 
-lineParse :: Parser String Int
-lineParse = do
-  decimalList <- many $ try parserHelper
-  _ <- char '\n'
-  let firstNum = unsafePartial $ head decimalList
-  let lastNum = unsafePartial $ last decimalList
-  pure $ firstNum * 10 + lastNum
-
-parser :: Parser String Int
-parser = do
-  decimalList <- many $ try lineParse
-  pure $ sum decimalList
-
+-- These are verified to be working
 parseZero :: Parser String Char
 parseZero = do
   _ <- string "zero" <|> string "0"
